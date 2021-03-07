@@ -9,8 +9,8 @@ The application was created following MVVM architecture.
 - Retrofit for API calls
 - Moshi to parse JSON data
 - Glide to render images from URL
-- Data Binding to render data direction to a fragment from a View-Model
-- Coroutines to manage threads and debounce logic for API calls as query text is updated
+- Data Binding to render data directly to a fragment from a View-Model
+- Coroutines to manage threads / debounce logic for API calls as query text is updated
 
 ### How To Run
 - I have a Global.kt file within '/app/src/main/java/com/colemichaels/giantbomb' please ensure that the API_KEY is assigned to an API key for Giant Bomb. I will not upload an API key to Github. This must be manually done for each user of the repo.
