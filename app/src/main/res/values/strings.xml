@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GiantBomb</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="game_box_art">Game Box Art</string>
+    <string name="search">Search</string>
+    <string name="please_search_for_a_video_game">Please search for a video game...</string>
+    <string name="description">Description:</string>
+</resources>
