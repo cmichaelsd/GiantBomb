@@ -5,7 +5,9 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.ProgressBar
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -38,6 +40,9 @@ class MainFragment : Fragment(),
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeLayout: SwipeRefreshLayout
 
+    private lateinit var noContentText: TextView
+    private lateinit var progress: ProgressBar
+
     private lateinit var navController: NavController
 
     private lateinit var searchView: SearchView
@@ -59,6 +64,10 @@ class MainFragment : Fragment(),
 
         recyclerView = view.findViewById(R.id.giantBombRecycler)
 
+        noContentText = view.findViewById(R.id.noContent)
+
+        progress = view.findViewById(R.id.progress_bar)
+
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host)
 
         viewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
@@ -67,6 +76,16 @@ class MainFragment : Fragment(),
             val adapter = MainRecyclerAdapter(requireContext(), it.results, this)
             recyclerView.adapter = adapter
             swipeLayout.isRefreshing = false
+
+            progress.visibility = View.GONE
+
+            if (it.results.isEmpty()) {
+                noContentText.visibility = View.VISIBLE
+                swipeLayout.visibility = View.GONE
+            } else {
+                noContentText.visibility = View.GONE
+                swipeLayout.visibility = View.VISIBLE
+            }
         })
 
         swipeLayout = view.findViewById(R.id.giantBombSwipeLayout)
@@ -117,6 +136,8 @@ class MainFragment : Fragment(),
 
         queryString = query
 
+        noContentText.visibility = View.GONE
+
         viewModel.refreshData(query)
 
         return true
@@ -126,6 +147,10 @@ class MainFragment : Fragment(),
         if (newText == null || newText == "") return false
 
         queryString = newText
+
+        noContentText.visibility = View.GONE
+
+        progress.visibility = View.VISIBLE
 
         queryTextChangedJob?.cancel()
 

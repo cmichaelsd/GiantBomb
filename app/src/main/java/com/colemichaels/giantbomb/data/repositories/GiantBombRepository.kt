@@ -1,17 +1,14 @@
 package com.colemichaels.giantbomb.data.repositories
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.MutableLiveData
 import com.colemichaels.giantbomb.API_KEY
 import com.colemichaels.giantbomb.LOG_TAG
-import com.colemichaels.giantbomb.R
 import com.colemichaels.giantbomb.WEB_SERVICE_URL
 import com.colemichaels.giantbomb.data.models.GiantBombResponse
 import com.colemichaels.giantbomb.data.services.GiantBombService
-import com.colemichaels.giantbomb.utilities.FileHelper
 import com.colemichaels.giantbomb.utilities.network.NetworkOperationsImpl
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -26,7 +23,7 @@ class GiantBombRepository(val app: Application) {
     val giantBombData = MutableLiveData<GiantBombResponse>()
 
     init {
-        refreshData("mario")
+        giantBombData.postValue(GiantBombResponse())
     }
 
     @WorkerThread
