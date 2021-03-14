@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.colemichaels.giantbomb.LOG_TAG
 import com.colemichaels.giantbomb.R
 import com.colemichaels.giantbomb.data.models.Game
+import com.colemichaels.giantbomb.data.models.GiantBombResponse
 import com.colemichaels.giantbomb.ui.shared.SharedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -79,13 +80,7 @@ class MainFragment : Fragment(),
 
             progress.visibility = View.GONE
 
-            if (it.results.isEmpty()) {
-                noContentText.visibility = View.VISIBLE
-                swipeLayout.visibility = View.GONE
-            } else {
-                noContentText.visibility = View.GONE
-                swipeLayout.visibility = View.VISIBLE
-            }
+            handleMainFragmentLayout(it)
         })
 
         swipeLayout = view.findViewById(R.id.giantBombSwipeLayout)
@@ -95,6 +90,16 @@ class MainFragment : Fragment(),
         }
 
         return view
+    }
+
+    private fun handleMainFragmentLayout(giantBombResponse: GiantBombResponse) {
+        if (giantBombResponse.results.isEmpty()) {
+            noContentText.visibility = View.VISIBLE
+            swipeLayout.visibility = View.GONE
+        } else {
+            noContentText.visibility = View.GONE
+            swipeLayout.visibility = View.VISIBLE
+        }
     }
 
     override fun onGameItemClick(gameItem: Game) {
@@ -157,7 +162,7 @@ class MainFragment : Fragment(),
         queryTextChangedJob = lifecycleScope.launch(Dispatchers.Main) {
             Log.i(LOG_TAG, "onQueryTextSubmit: Async work started...")
 
-            delay(1000)
+            delay(ON_QUERY_DELAY)
 
             viewModel.refreshData(queryString)
 

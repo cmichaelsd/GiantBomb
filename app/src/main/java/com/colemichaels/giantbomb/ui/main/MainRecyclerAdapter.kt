@@ -25,14 +25,14 @@ class MainRecyclerAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val game = gameData[position]
-        with(holder) {
+        with (holder) {
             nameText?.let {
                 it.text = game.name
             }
             Glide.with(context)
                 .load(game.thumbBoxArt)
                 .into(gameBoxArt)
-            holder.itemView.setOnClickListener {
+            itemView.setOnClickListener {
                 itemListener.onGameItemClick(game)
             }
         }
