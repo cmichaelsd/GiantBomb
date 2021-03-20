@@ -21,6 +21,7 @@ import com.colemichaels.giantbomb.R
 import com.colemichaels.giantbomb.data.models.Game
 import com.colemichaels.giantbomb.data.models.GiantBombResponse
 import com.colemichaels.giantbomb.ui.shared.SharedViewModel
+import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -63,11 +64,11 @@ class MainFragment : Fragment(),
 
         val view = inflater.inflate(R.layout.main_fragment, container, false)
 
-        recyclerView = view.findViewById(R.id.giantBombRecycler)
+        recyclerView = giant_bomb_recycler
 
-        noContentText = view.findViewById(R.id.noContent)
+        noContentText = no_content
 
-        progress = view.findViewById(R.id.progress_bar)
+        progress = progress_bar
 
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host)
 
@@ -83,7 +84,7 @@ class MainFragment : Fragment(),
             handleMainFragmentLayout(it)
         })
 
-        swipeLayout = view.findViewById(R.id.giantBombSwipeLayout)
+        swipeLayout = giant_bomb_swipe_layout
 
         swipeLayout.setOnRefreshListener {
             viewModel.refreshData(queryString)

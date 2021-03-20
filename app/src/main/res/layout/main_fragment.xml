@@ -8,13 +8,13 @@
     tools:context=".ui.main.MainFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/giantBombSwipeLayout"
+        android:id="@+id/giant_bomb_swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/giantBombRecycler"
+            android:id="@+id/giant_bomb_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -32,7 +32,7 @@
 
     <TextView
         android:visibility="visible"
-        android:id="@+id/noContent"
+        android:id="@+id/no_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

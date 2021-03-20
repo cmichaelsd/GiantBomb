@@ -10,11 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.colemichaels.giantbomb.R
 import com.colemichaels.giantbomb.data.models.Game
+import kotlinx.android.synthetic.main.giantbomb_grid_item.view.*
 
 class MainRecyclerAdapter(
-    val context: Context,
-    val gameData: List<Game>,
-    val itemListener: GameItemListener
+    private val context: Context,
+    private val gameData: List<Game>,
+    private val itemListener: GameItemListener
 ) : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,8 +43,8 @@ class MainRecyclerAdapter(
 
     inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        val nameText: TextView = itemView.findViewById(R.id.nameTextView)
-        val gameBoxArt: ImageView = itemView.findViewById(R.id.gameBoxArt)
+        val nameText: TextView = itemView.name_text_view
+        val gameBoxArt: ImageView = itemView.game_box_art
     }
 
     interface GameItemListener {
