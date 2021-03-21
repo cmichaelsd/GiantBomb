@@ -5,23 +5,19 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ProgressBar
 import android.widget.SearchView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.colemichaels.giantbomb.LOG_TAG
 import com.colemichaels.giantbomb.R
 import com.colemichaels.giantbomb.data.models.Game
 import com.colemichaels.giantbomb.data.models.GiantBombResponse
+import com.colemichaels.giantbomb.databinding.MainFragmentBinding
 import com.colemichaels.giantbomb.ui.shared.SharedViewModel
-import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -37,18 +33,16 @@ class MainFragment : Fragment(),
         const val ON_QUERY_DELAY = 1000L
     }
 
+    private lateinit var binding: MainFragmentBinding
+
     private lateinit var viewModel: SharedViewModel
-
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var swipeLayout: SwipeRefreshLayout
-
-    private lateinit var noContentText: TextView
-    private lateinit var progress: ProgressBar
 
     private lateinit var navController: NavController
 
     private lateinit var searchView: SearchView
+
     private var queryTextChangedJob: Job? = null
+
     private var queryString: String = ""
 
     override fun onCreateView(
@@ -62,13 +56,7 @@ class MainFragment : Fragment(),
 
         setHasOptionsMenu(true)
 
-        val view = inflater.inflate(R.layout.main_fragment, container, false)
-
-        recyclerView = giant_bomb_recycler
-
-        noContentText = no_content
-
-        progress = progress_bar
+        binding = MainFragmentBinding.inflate(inflater, container, false)
 
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host)
 
@@ -76,36 +64,40 @@ class MainFragment : Fragment(),
 
         viewModel.giantBombData.observe(viewLifecycleOwner, {
             val adapter = MainRecyclerAdapter(requireContext(), it.results, this)
-            recyclerView.adapter = adapter
-            swipeLayout.isRefreshing = false
 
-            progress.visibility = View.GONE
+            binding.giantBombRecycler.adapter = adapter
+
+            binding.giantBombSwipeLayout.isRefreshing = false
 
             handleMainFragmentLayout(it)
         })
 
-        swipeLayout = giant_bomb_swipe_layout
-
-        swipeLayout.setOnRefreshListener {
+        binding.giantBombSwipeLayout.setOnRefreshListener {
             viewModel.refreshData(queryString)
         }
 
-        return view
+        return binding.root
     }
 
     private fun handleMainFragmentLayout(giantBombResponse: GiantBombResponse) {
         if (giantBombResponse.results.isEmpty()) {
-            noContentText.visibility = View.VISIBLE
-            swipeLayout.visibility = View.GONE
+            binding.noContent.visibility = View.VISIBLE
+
+            binding.giantBombSwipeLayout.visibility = View.GONE
         } else {
-            noContentText.visibility = View.GONE
-            swipeLayout.visibility = View.VISIBLE
+            binding.noContent.visibility = View.GONE
+
+            binding.giantBombSwipeLayout.visibility = View.VISIBLE
         }
+
+        binding.progressBar.visibility = View.GONE
     }
 
     override fun onGameItemClick(gameItem: Game) {
         Log.i(LOG_TAG, gameItem.name.toString())
+
         viewModel.selectedGame.value = gameItem
+
         navController.navigate(R.id.action_nav_detail)
     }
 
@@ -142,7 +134,7 @@ class MainFragment : Fragment(),
 
         queryString = query
 
-        noContentText.visibility = View.GONE
+        binding.noContent.visibility = View.GONE
 
         viewModel.refreshData(query)
 
@@ -154,9 +146,9 @@ class MainFragment : Fragment(),
 
         queryString = newText
 
-        noContentText.visibility = View.GONE
+        binding.noContent.visibility = View.GONE
 
-        progress.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
 
         queryTextChangedJob?.cancel()
 

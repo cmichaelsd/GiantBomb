@@ -22,8 +22,11 @@ class DetailFragment : Fragment() {
         fun newInstance() = DetailFragment()
     }
 
-    private lateinit var navController: NavController
+    private lateinit var binding: DetailFragmentBinding
+
     private lateinit var viewModel: SharedViewModel
+
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +43,7 @@ class DetailFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        val binding = DetailFragmentBinding.inflate(inflater, container, false)
+        binding = DetailFragmentBinding.inflate(inflater, container, false)
 
         binding.lifecycleOwner = this
 

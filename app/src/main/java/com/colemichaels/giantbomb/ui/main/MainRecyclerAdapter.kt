@@ -8,9 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.colemichaels.giantbomb.R
 import com.colemichaels.giantbomb.data.models.Game
-import kotlinx.android.synthetic.main.giantbomb_grid_item.view.*
+import com.colemichaels.giantbomb.databinding.GiantbombGridItemBinding
 
 class MainRecyclerAdapter(
     private val context: Context,
@@ -18,24 +17,27 @@ class MainRecyclerAdapter(
     private val itemListener: GameItemListener
 ) : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>() {
 
+    private lateinit var binding: GiantbombGridItemBinding
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.giantbomb_grid_item, parent, false)
-        return ViewHolder(view)
+
+        binding = GiantbombGridItemBinding.inflate(inflater, parent, false)
+
+        return ViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val game = gameData[position]
-        with (holder) {
-            nameText?.let {
-                it.text = game.name
-            }
-            Glide.with(context)
-                .load(game.thumbBoxArt)
-                .into(gameBoxArt)
-            itemView.setOnClickListener {
-                itemListener.onGameItemClick(game)
-            }
+
+        holder.nameText.text = game.name
+
+        Glide.with(context)
+            .load(game.thumbBoxArt)
+            .into(holder.gameBoxArt)
+
+        holder.itemView.setOnClickListener {
+            itemListener.onGameItemClick(game)
         }
     }
 
@@ -43,8 +45,9 @@ class MainRecyclerAdapter(
 
     inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        val nameText: TextView = itemView.name_text_view
-        val gameBoxArt: ImageView = itemView.game_box_art
+        val nameText: TextView = binding.nameTextView
+
+        val gameBoxArt: ImageView = binding.gameBoxArt
     }
 
     interface GameItemListener {
