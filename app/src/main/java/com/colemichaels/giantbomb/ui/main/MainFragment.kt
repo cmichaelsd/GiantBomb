@@ -30,7 +30,7 @@ class MainFragment : Fragment(),
 
     companion object {
         fun newInstance() = MainFragment()
-        const val ON_QUERY_DELAY = 1000L
+        const val ON_QUERY_DELAY = 500L
     }
 
     private lateinit var binding: MainFragmentBinding
@@ -63,9 +63,7 @@ class MainFragment : Fragment(),
         viewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         viewModel.giantBombData.observe(viewLifecycleOwner, {
-            val adapter = MainRecyclerAdapter(requireContext(), it.results, this)
-
-            binding.giantBombRecycler.adapter = adapter
+            binding.giantBombRecycler.adapter = MainRecyclerAdapter(it.results, this)
 
             binding.giantBombSwipeLayout.isRefreshing = false
 
